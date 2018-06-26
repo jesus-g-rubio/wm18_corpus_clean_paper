@@ -1,13 +1,29 @@
 \section{Corpus filtering as QE task}
 
-Introduction to the approach, maybe with some diagram. List problems to be solved. One sub-section to explain each of them
+We frame corpus filtering within the QE framework. Strictly speaking, we are not going to explicitly select the ''best´´ subset of pairs from the noisy original data. We'll, however, evaluate how well the source and target sentences on each pair correspond to each other. Then, we select the highest-scoring among these pairs to generate the final filtered corpus.
+
+Note that this approach may be sub-optimal since it does not consider the noisy data as a whole but considers each individual pair of sentences in isolation to the rest. In exchange for this, we end up with a much more efficient method, linear in the size of the noisy data.
+
+The process is straight-forward to describe. Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of features that represent that particular pair of sentences. Then, we use these features to predict a binary score indicating if the sentences in the pair correspond to each other or not. 
+
+In order to make the training process effective, any binary classification model needs to use both positive and negative examples. In our context positive examples are pairs of sentences that correspond to each other. Correspondingly, negative examples are pairs of sentences that does not. Positive examples can easily be obtained from clean parallel corpora, and, while there is no explicit corpus with negative examples, these can be generated on demand. 
+
+Next, we describe in detail the features we've used in our submission (Sec.~\ref{ssec:features}), the classification model we chose (Sec.~\ref{ssec:model}), and the process we followed to train our final submission (Sec.~\ref{ssec:training}).
+
 
 \subsection{Features}
-Description of all the features used, maybe clasifying them depending on which part of a good-parallel example they try to capture (adequacy, fluency, syntactic pleasure, ...)
+\label{ssec:features}
+
+Description of all the features used, maybe classifying them depending on which part of a good-parallel example they try to capture (adequacy, fluency, syntactic pleasure, ...)
 
 \subsection{Classification Model}
-Present the clasifier chosen and why (maybe enough saying in preliminary experiments it worked awesome)
+\label{ssec:model}
+
+Present the classifier chosen and why (maybe enough saying in preliminary experiments it worked awesome)
+
 
 \subsection{Training regime}
+\label{ssec:training}
+
 Explain the generation of negative examples
-%\cite{Hainan17}
+\cite{Hainan17}
