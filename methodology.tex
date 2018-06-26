@@ -19,7 +19,11 @@ Description of all the features used, maybe classifying them depending on which 
 \subsection{Classification Model}
 \label{ssec:model}
 
-Present the classifier chosen and why (maybe enough saying in preliminary experiments it worked awesome)
+We did some initial experiments testing different classifiers and gradient boosting~\cite{Friedman02} obtained the best results. Thus, we use gradient boosting as the classification model in our submission.
+
+Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function. In particular, we use gradient boosting as implemented in scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}}.
+
+
 
 
 \subsection{Training regime}
