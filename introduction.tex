@@ -8,4 +8,6 @@ The organizers make explicit that the task addresses the challenge of \emph{data
 
 The provided raw parallel corpus is the outcome of a processing pipeline that aimed from high recall at the cost of precision, so it is very noisy. It exhibits noise of all kinds (wrong language in source and target, sentence pairs that are not translations of each other, bad language, incomplete of bad translations, etc.).
 
-Next, we describe how we approached this task.
+We address this problem under the framework of quality estimation (QE)~\cite{Blatz04}. In contrast to conventional QE tasks that evaluate the quality of an automatic translation of a source sentence without a reference. We consider parallel corpus filtering as a QE task where we estimate how much a pair of sentences in two languages correspond (are translation of) each other. 
+
+Next, we describe the specific details of our submission. In section~\ref{sec:results}, we present the results of our experiments and the performance of our final submission. Finally, we close the paper with the conclusions of our work and some ideas for future work.
