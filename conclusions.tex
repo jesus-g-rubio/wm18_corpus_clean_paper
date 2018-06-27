@@ -1,2 +1,9 @@
 \section{Conclusions}
-What to do next.
+We have presented our submission to the WMT18 shared task on parallel corpus filtering. We frame the task as a QE problem, where we estimate how well two sentences correspond to each other to be part of a training sample for machine translation models. Our approach is computationally light, takes advantage of well-known methods used for QE, and exploits a general training regime that allows to customize it by defining under demand samples of negative examples to be filtered out.
+
+There are several directions that can be explored to extend this approach:
+\begin{itemize}
+\item Use a neural model to automatically estimate the features relevant for the system instead of hand-designing them.
+\item Extend the training regime with new perturbation operations, in particular those that degrade the quality of the pair so it is less valuable as training data for machine translation.
+\item Implement an iterative training procedure where steps of model training and data cleaning are repeated over the own training data until convergence. This will make training more robust and less dependent on clean training data.
+\end{itemize}
