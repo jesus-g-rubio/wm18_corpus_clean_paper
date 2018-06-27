@@ -14,7 +14,33 @@ Next, we describe in detail the features we've used in our submission (Sec.~\ref
 \subsection{Features}
 \label{ssec:features}
 
-Description of all the features used, maybe classifying them depending on which part of a good-parallel example they try to capture (adequacy, fluency, syntactic pleasure, ...)
+We use a rich variety of features intended to capture what it means to be an adequate training pair of sentences. For simplicity, we split them into three categories.
+
+\textbf{Adequacy} These features measure how much of the meaning of the original is expressed in the translation and vice versa. To this end, we use probabilistic lexicons with different formulations on how to align the words of the two sentences to compute how accurate are both sentences translation of each other. 
+\begin{itemize}
+\item \textit{Average Max lexical probability (2 f.)}: originally proposed by~\cite{Ueffing05} for word-level QE. It measures the average maximum probability of translation from each word in the sentence. We apply it in both source-to-target and target-to-source directions. Formally, it is given by:
+$$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
+where the source word $\mathbf{s}=s_1\ldots s_m$ has $m$ words, the target sentence $\mathbf{t}=t_1\ldots t_n$ has $n$ words and the word $s_0$ indicates the NULL word~\cite{Brown93}.
+\item \textit{Cross-entropy (2 f.)}: proposed by~\cite{Hainan17}, it measures a ''distance´´ between the sentence pairs based on a bag-of-words translation model. Specifically, the ''distance´´ is measured as the cross-entropy between the bag-of-words of the actual sentence and the bag-of-words estimated from the other sentence in the pair via the probabilistic lexicon. We apply it in both source-to-target and target-to-source directions.
+\end{itemize}
+
+\textbf{Fluency} this type of features aim at capturing if the sentences are well-formed grammatically, contain correct spellings, adhere to common use of terms, titles and names, are intuitively acceptable and can be sensibly interpreted by a native speaker. We use two different features, both based on language models:
+\begin{itemize}
+\item \textit{Language model score (2 f.)}: given language models for the source and target languages, we use af features the score of each sentence in the pair computed with the corresponding model.
+\item \textit{Perplexity (2 f.)}: is measured as the inverse probability of the sentence normalized by its number of words. Again, we apply it to both source and target sentences in the pair.
+\end{itemize}
+
+\textbf{Shape features} This features can be seen as an extension of adequacy since they measure the mismatch between the frequency of different tokens between the two sentences in the pair; these features are quite commonly used in the QE literature,~\cite{specia15} \textit{inter alia}.
+\begin{itemize}
+\item \textit{Counts (8 f.)}: count of words, numbers, alphanumeric tokens, and punctuation in both source and target sentences.
+\item \textit{Jaccard index (4 f.)}: metric that measures the similarity and diversity of the sets of tokens between the source and target sentences. Formally it is defined as:
+$$ \frac{\mid A\cap B\mid}{\mid A\cup B\mid}$$
+were $A$ and $B$ are the set of tokens of the source and target sentences respectively. We apply it to words, numbers, alphanumeric tokens and punctuation.
+\item \textit{Counts difference (16 f.)}: we compute four metrics from the counts of tokens: the ratio in both directions, the absolute difference, and the absolute difference normalized by the maximum number of tokens of both sentences. Each of this metrics is applied to four different types of tokens: words, numbers, alphanumeric tokens and punctuation.
+\item \textit{Specific punctuation (12 f.)} similarly as the previous features, but in this case we only compute the absolute difference and the normalized difference for specific punctuation tokens: dot (.), comma (,), colon (:), semicolon (;), exclamation mark (!), and question mark (?).
+\end{itemize}
+
+
 
 \subsection{Classification Model}
 \label{ssec:model}
@@ -24,10 +50,17 @@ We did some initial experiments testing different classifiers and gradient boost
 Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function. In particular, we use gradient boosting as implemented in scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}}.
 
 
-
-
 \subsection{Training regime}
 \label{ssec:training}
 
-Explain the generation of negative examples
-\cite{Hainan17}
+An important consideration for this task is how to obtain suitable examples to train the classification model. Positive examples are easy to obtain since any clean parallel corpus provide us with plenty of them. Negative examples, however, are not readily available -there exist no collection of ''wrong´´ sentence pairs. Fortunately, they can be easily generated on demand. We mostly followed the same approach as~\cite{Hainan17}, perturbing one or both of the sentences in a pair to create a new synthetic pair that by construction constitutes a negative example.
+
+We apply three different perturbation operations when generating negative pairs:
+\begin{itemize}
+\item \textit{Swap}: exchange source and target sentences.
+\item \textit{Copy}: two copies of the same string. We apply it to both source and target strings.
+\item \textit{Randomization}: replace the source or target string by a random one.
+\end{itemize}
+
+In our experiments, we use the same amount of positive and negative examples, where the negative examples were equally distributed between the three perturbation operations.
+
