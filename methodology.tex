@@ -1,15 +1,14 @@
 \section{Corpus filtering as QE task}
 
-We frame corpus filtering within the QE framework. Strictly speaking, we are not going to explicitly select the ''best´´ subset of pairs from the noisy original data. We'll, however, evaluate how well the source and target sentences on each pair correspond to each other. Then, we select the highest-scoring among these pairs to generate the final filtered corpus.
+We frame the corpus filtering task within the QE framework. Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of features indicating to what extent the sentences correspond to each other. Then, these features are used to predict a binary score indicating if the sentences in the pair can be considered translations of each other.
 
-Note that this approach may be sub-optimal since it does not consider the noisy data as a whole but considers each individual pair of sentences in isolation to the rest. In exchange for this, we end up with a much more efficient method, linear in the size of the noisy data.
+In order to make the training process effective, any binary classification model needs to use both positive and negative examples. In our context positive examples are pairs of original and translated sentences, whereas negative examples are sentence pairs that cannot be considered translations of each other. Positive examples can be easily obtained from clean parallel corpora, and, while there is no explicit corpus with negative examples, these can be generated on demand.
 
-The process is straight-forward to describe. Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of features that represent that particular pair of sentences. Then, we use these features to predict a binary score indicating if the sentences in the pair correspond to each other or not. 
+We use the confidence score from our binary classifier as the final score for our submission to the shared task. As described in the previous Section, based on this score, the sentence pairs in the original noisy corpus provided by the organizers will be sorted and then the first N pairs will be selected and used to train the MT systems.
 
-In order to make the training process effective, any binary classification model needs to use both positive and negative examples. In our context positive examples are pairs of sentences that correspond to each other. Correspondingly, negative examples are pairs of sentences that does not. Positive examples can easily be obtained from clean parallel corpora, and, while there is no explicit corpus with negative examples, these can be generated on demand. 
+Note that this approach may be sub-optimal since it considers each individual pair of sentences in isolation from the rest. In exchange for this, we end up with a much more efficient method, linear in the size of the noisy data.
 
-Next, we describe in detail the features we've used in our submission (Sec.~\ref{ssec:features}), the classification model we chose (Sec.~\ref{ssec:model}), and the process we followed to train our final submission (Sec.~\ref{ssec:training}).
-
+Next, we describe in detail the features we used for our submission (Sec.~\ref{ssec:features}), the classification model we chose (Sec.~\ref{ssec:model}), and the process we followed to train our final submission (Sec.~\ref{ssec:training}).
 
 \subsection{Features}
 \label{ssec:features}
