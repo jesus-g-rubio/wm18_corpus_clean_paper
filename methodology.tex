@@ -17,10 +17,10 @@ We use a rich variety of features intended to capture what it means to be an ade
 
 \textbf{Adequacy} These features measure how much of the meaning of the original is expressed in the translation and vice versa. We use probabilistic lexicons with different formulations of word alignment to estimate the extent to which the words in the original and translated sentences correspond to each other. 
 \begin{itemize}
-\item \textit{Average Max lexical probability (2 f.)}: originally proposed by~\cite{Ueffing05} for word-level QE. It measures the average maximum probability of translation for each word in the sentence. We apply it in both source-to-target and target-to-source directions. Formally, it is given by:
+\item \textit{Average Max lexical probability (2 f.)}: originally proposed by~\cite{Ueffing05} for word-level QE. It measures the average maximum probability of translation for each word in the sentence. We apply it in both source-to-target and target-to-source directions. Formally, source-to-target is given by:
 $$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
-where the source word $\mathbf{s}=s_1\ldots s_m$ has $m$ words, the target sentence $\mathbf{t}=t_1\ldots t_n$ has $n$ words and the word $s_0$ indicates the NULL word~\cite{Brown93}.
-\item \textit{Cross-entropy (2 f.)}: proposed by~\cite{Hainan17}, it measures a "distance" between the sentence pairs based on a bag-of-words translation model. Specifically, the "distance" is measured as the cross-entropy between the bag-of-words of the actual sentence and the bag-of-words estimated from the other sentence in the pair via the probabilistic lexicon. We apply it in both source-to-target and target-to-source directions.
+where the source word $\mathbf{s}=s_1\ldots s_m$ has $m$ words, the target sentence $\mathbf{t}=t_1\ldots t_n$ has $n$ words and the word $s_0$ indicates the NULL word~\cite{Brown93}. For target-to-source, source and target words swap their roles.
+\item \textit{Cross-entropy (2 f.)}: proposed by~\cite{Hainan17}, it measures a ``distance'' between the sentence pairs based on a bag-of-words translation model. Specifically, the ``distance'' is measured as the cross-entropy between the bag-of-words of the actual sentence and the bag-of-words estimated from the other sentence in the pair via the probabilistic lexicon. We apply it in both source-to-target and target-to-source directions.
 \end{itemize}
 
 \textbf{Fluency} This type of features aim at capturing if the sentences are well-formed grammatically, contain correct spellings, adhere to common use of terms, titles and names, are intuitively acceptable and can be sensibly interpreted by a native speaker. We use two different features, both based on language models:
@@ -43,7 +43,7 @@ where $A$ and $B$ are the set of tokens of the source and target sentences respe
 \subsection{Training regime}
 \label{ssec:training}
 
-An important consideration for this task is how to obtain suitable examples to train the classification model. Positive examples are easy to obtain since any clean parallel corpus provide us with plenty of them. Negative examples, however, are not readily available -there exist no collection of "wrong" sentence pairs. Fortunately, they can be easily generated on demand. We mostly followed the approach described in~\cite{Hainan17}, perturbing one or both of the sentences in a pair to create a new synthetic pair that by construction constitutes a negative example.
+An important consideration for this task is how to obtain suitable examples to train the classification model. Positive examples are easy to obtain since any clean parallel corpus provide us with plenty of them. Negative examples, however, are not readily available -there exist no collection of ``wrong'' sentence pairs. Fortunately, they can be easily generated on demand. We mostly followed the approach described in~\cite{Hainan17}, perturbing one or both of the sentences in a pair to create a new synthetic pair that by construction constitutes a negative example.
 
 We apply three different perturbation operations when generating negative pairs:
 \begin{itemize}
@@ -52,7 +52,7 @@ We apply three different perturbation operations when generating negative pairs:
 \item \textit{Randomization}: replace the source or target sentence by a random sentence from the same side of the corpus.
 \end{itemize}
 
-As can be seen from above, we focus on the perturbation operations that mess with the correct alignment between the sentences. Thus, we aim at identifying correctly aligned sentence pairs. A complementary approach would be to aim at detecting the actual "quality" of the sentence pair, or, in other words, how valuable a sentence pair is when used for training MT systems. However, this is left for future developments.
+As can be seen from above, we focus on the perturbation operations that mess with the correct alignment between the sentences. Thus, we aim at identifying correctly aligned sentence pairs. A complementary approach would be to aim at detecting the actual ``quality'' of the sentence pair, or, in other words, how valuable a sentence pair is when used for training MT systems. However, this is left for future developments.
 
 
 \subsection{Classification model}
@@ -60,4 +60,4 @@ As can be seen from above, we focus on the perturbation operations that mess wit
 
 We did some initial experiments testing the performance of different classifiers on the task of distinguishing between actual original-translation sentence pairs and the synthetically generated negative examples (see Sec.~\ref{ssec:data} for details on the data we used). Gradient boosting algorithm ~\cite{Friedman02} obtained the highest accuracy and, therefore, we used it for our final submission.
 
-Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. Similar to other boosting methods, it builds the models in a stage-wise fashion and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
+Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. Similar to other boosting methods, it builds the models in a stage-wise fashion and it generalizes them by allowing optimization of an arbitrary differentiable loss function\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}}.
