@@ -15,7 +15,6 @@ We also used News Commentary V13 parallel corpus for training the classifier. We
 
 We also conducted some initial experiments using the Common Crawl corpus, under the rationale that it would be closer to the domain of the noisy data from the Paracrawl corpus. However, Common Crawl data has quite a large number of misaligned sentences. To handle this issue we implemented an iterative training process which comprises the following steps: a) train the model using all available data as positive class and synthetically generated data as negative class (see Sec~\ref{ssec:training}); b) use the trained model to clean the available data eliminating the sentence pairs assigned to the negative class with a very high probability; c) use the cleaned data to train a new model; d) repeat until no more sentence pairs can be eliminated with a given threshold. An advantage of this approach is that it allows to be less dependent on the quality of the initial training data. However, we had to stop exploring this direction due to time constraints.
 
-
 %https://docs.google.com/spreadsheets/d/1SKMOBbH5YVsQJpbUCMN3K8Gzt_89zBabQl716Aw8NjM/edit?usp=sharing
 \begin{figure}[ht]
   \centering
