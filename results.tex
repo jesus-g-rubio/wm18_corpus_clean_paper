@@ -15,6 +15,10 @@ We also used News Commentary V13 parallel corpus for training the classifier. We
 
 We also conducted some initial experiments using the Common Crawl corpus, under the rationale that it would be closer to the domain of the noisy data from the Paracrawl corpus. However, Common Crawl data has quite a large number of misaligned sentences. To handle this issue we implemented an iterative training process which comprises the following steps: a) train the model using all available data as positive class and synthetically generated data as negative class (see Sec~\ref{ssec:training}); b) use the trained model to clean the available data eliminating the sentence pairs assigned to the negative class with a very high probability; c) use the cleaned data to train a new model; d) repeat until no more sentence pairs can be eliminated with a given threshold. An advantage of this approach is that it allows to be less dependent on the quality of the initial training data. However, we had to stop exploring this direction due to time constraints.
 
+\subsection{Evaluation and results}
+
+Participants in the shared task have to submit a file with quality scores, one per line, corresponding to the sentence pairs on the 1 billion word German–-English Paracrawl corpus. Scores do not have to be meaningful, except that higher scores indicate better quality. The performance of the submissions is evaluated by sub-sampling $10$ million and $100$ million word corpora based on these scores, training statistical~\cite{Moses} and neural~\cite{Marian} MT systems with these corpora, and assessing translation quality on six blind test sets\footnote{Tests: newstest 2018, iwslt 2017, Acquis, EMEA, Global Voices, and KDE.} using the BLEU~\cite{Bleu} score. 
+
 %https://docs.google.com/spreadsheets/d/1SKMOBbH5YVsQJpbUCMN3K8Gzt_89zBabQl716Aw8NjM/edit?usp=sharing
 \begin{figure}[ht]
   \centering
@@ -32,10 +36,6 @@ We also conducted some initial experiments using the Common Crawl corpus, under 
   \caption{Best submission of each participant institution. We display BLEU [\%] results stacked for SMT (\textcolor{blue}{blue}) and NMT (\textcolor{red}{red}).}
   \label{fig:results}
 \end{figure}
-
-\subsection{Evaluation and results}
-
-Participants in the shared task have to submit a file with quality scores, one per line, corresponding to the sentence pairs on the 1 billion word German–-English Paracrawl corpus. Scores do not have to be meaningful, except that higher scores indicate better quality. The performance of the submissions is evaluated by sub-sampling $10$ million and $100$ million word corpora based on these scores, training statistical~\cite{Moses} and neural~\cite{Marian} MT systems with these corpora, and assessing translation quality on six blind test sets\footnote{Tests: newstest 2018, iwslt 2017, Acquis, EMEA, Global Voices, and KDE.} using the BLEU~\cite{Bleu} score. 
 
 Figure~\ref{fig:results} displays the score of the best submission of each individual participant institution. The top plot shows the results for the $10$ million token sub-sampled corpus, and the bottom plot shows the results for the $100$ million token corpus. Scores are the aggregation of the BLEU scores of the statistical and neural systems averaged over the six blind test sets.
 
