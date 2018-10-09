@@ -1,5 +1,8 @@
 \documentclass[a0]{sciposter}
 \usepackage{multicol}
+\usepackage{url}
+\usepackage{graphicx}
+
 
 \title{Webinterpret @ WMT2018\\Parallel Corpus Filtering Task}
 \author{Marina Fomicheva and Jes\'{u}s Gonz\'{a}lez-Rubio}
@@ -25,35 +28,84 @@
 
 \maketitle
 
-\begin{multicols*}{3}
+\begin{multicols*}{2}
 
 
 \begin{abstract}
-add abstract?
+Here we describe the participation of Webinterpret in the shared task on parallel corpus filtering at the Third Conference on Machine Translation (WMT 2018). The paper describes the main characteristics of our approach and discusses the results obtained on the data sets published for the shared task.
 \end{abstract}
 
 %%% Introduction
-\section{Task description}
+\section{Task description and proposed approach}
+Given a noisy parallel corpus (crawled from the web), participants develop methods to filter it to a smaller size of high quality sentence pairs.
 
-Parallel corpus cleaning:
-\begin{enumerate}
-  \item[Input:]
-  \item[Output:]
-  \item[Criteria:]
-\end{enumerate}
+\begin{itemize}
+  \item {\bf Input:} a very noisy $1$ billion word German--English corpus crawled from the web as part of the Paracrawl project\footnote{\url{https://paracrawl.eu/}}.
+  \item {\bf Output:} two subsets of sentence pairs that amount to $100$ million words, and $10$ million words.
+  \item {\bf Criteria:} quality of a statistical and a neural Machine Translation systems trained on the selected data as measured by the BLEU score on two sets: the official WMT 2018 news translation test set, and a second undisclosed test set.
+\end{itemize}
+
+We consider parallel corpus filtering as a QE task where the goal is to estimate to what extent a pair of sentences in two languages can be considered as translations of each other. 
+
+Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of features indicating to what extent the sentences correspond to each other. Then, these features are used to predict a binary score indicating if the sentences should be considered translation of each other.
+
 
 \section{Features}
+\subsection{Adequacy} 
+\begin{itemize}
+  \item \textit{Average Max lexical probability (2 f.)}: it measures the average maximum probability of translation for each word in the sentence. We apply it in both source-to-target and target-to-source directions. Formally, source-to-target is given by:
+  $$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
+  where the source word $\mathbf{s}=s_1\ldots s_m$ has $m$ words, the target sentence $\mathbf{t}=t_1\ldots t_n$ has $n$ words and the word $s_0$ indicates the NULL word. For target-to-source, source and target words swap their roles.
+  \item \textit{Cross-entropy (2 f.)}: it measures a ``distance'' between the sentence pairs based on a bag-of-words translation model. Specifically, the ``distance'' is measured as the cross-entropy between the bag-of-words of the actual sentence and the bag-of-words estimated from the other sentence in the pair via the probabilistic lexicon. We apply it in both source-to-target and target-to-source directions.
+\end{itemize}
 
-\subsection{Adequacy}
-
-\subsection{Fluency}
+\subsection{Fluency} 
+\begin{itemize}
+  \item \textit{Language model score (2 f.)}: given language models for the source and target languages, we use as features the log probability of each sentence in the pair computed with the corresponding model.
+  \item \textit{Perplexity (2 f.)}: is measured as the inverse probability of the sentence normalized by its number of words. Again, we apply it to both source and target sentences in the pair.
+\end{itemize}
 
 \subsection{Shape}
+\begin{itemize}
+  \item \textit{Counts (8 f.)}: count of words, numbers, alphanumeric tokens, and punctuation in both source and target sentences.
+  \item \textit{Jaccard index (4 f.)}: metric that measures the similarity and diversity of the sets of tokens between the source and target sentences. Formally it is defined as:
+  $$ \frac{\mid A\cap B\mid}{\mid A\cup B\mid}$$
+  where $A$ and $B$ are the set of tokens of the source and target sentences respectively. We apply it to words, numbers, alphanumeric tokens and punctuation.
+  \item \textit{Counts difference (16 f.)}: we compute four metrics from the counts of tokens: the ratio in both directions, the absolute difference, and the absolute difference normalized by the maximum number of tokens of both sentences. Each of these metrics is applied to four different types of tokens: words, numbers, alphanumeric tokens and punctuation.
+  \item \textit{Specific punctuation (12 f.)} same as the previous features, but in this case we only compute the absolute difference and the normalized difference for specific punctuation tokens: dot (.), comma (,), colon (:), semicolon (;), exclamation mark (!), and question mark (?).
+\end{itemize}
 
-\section{Training Regime}
+To compute the probabilistic lexicons, we used Moses on its default configuration with the News Commentary V13 parallel corpus as provided for the News translation shared task. We used the same corpora to train the language models. For this, we used Kenlm and estimated models of order $5$.
+
+\section{Training regime}
+An important consideration for this task is how to obtain suitable examples to train the classification model. Positive examples are easy to obtain since any clean parallel corpus provide us with plenty of them. Negative examples, however, are not readily available -there exist no collection of ``wrong'' sentence pairs. Fortunately, they can be easily generated on demand. 
+
+We apply three different perturbation operations when generating negative pairs:
+\begin{itemize}
+  \item \textit{Swap}: exchange source and target sentences.
+  \item \textit{Copy}: two copies of the same string. We apply it to both source and target strings.
+  \item \textit{Randomization}: replace the source or target sentence by a random sentence from the same side of the corpus.
+\end{itemize}
+
+As can be seen from above, we focus on the perturbation operations that mess with the correct alignment between the sentences. Thus, we aim at identifying correctly aligned sentence pairs. A complementary approach would be to aim at detecting the actual ``quality'' of the sentence pair, or, in other words, how valuable a sentence pair is when used for training MT systems. However, this is left for future developments.
+
+We also used News Commentary V13 parallel corpus for training the classifier. We generated as many negative examples as positive sentence pairs in the corpus for a total of almost $600$k data points. The negative examples were evenly distributed among the three perturbation operations described above.
+
+\section{Classification model}
+We did some initial experiments testing the performance of different classifiers on the task of distinguishing between actual original-translation sentence pairs and the synthetically generated negative examples. Gradient boosting algorithm obtained the highest accuracy and, therefore, we used it for our final submission.
+
+Gradient boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}} is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. Similar to other boosting methods, it builds the models in a stage-wise fashion and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
+
+We used the implementation of gradient boosting classifier from the scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}} to train our model. The model was then applied to each sentence pair in the noisy Paracrawl corpus from the shared task. We used the probability of the positive class as predicted by the classifier as the final scores in our submission.
 
 
 \section{Results}
+
+\includegraphics[width=\columnwidth]{assets/10M_crop.png}
+
+\includegraphics[width=\columnwidth]{assets/100M_crop.png}
+
+
 
 \end{multicols*}
 
