@@ -98,18 +98,38 @@ All features were computed from models trained on the News Commentary V13 parall
 
 
 \section*{\Large Training Regime}
-An important consideration for this task is how to obtain suitable examples to train the classification model. Positive examples are easy to obtain since any clean parallel corpus provide us with plenty of them. Negative examples, however, are not readily available -there exist no collection of ``wrong'' sentence pairs. Fortunately, they can be easily generated on demand. 
-
-We apply three different perturbation operations when generating negative pairs:
+\subsection*{Initial consideration} 
+how to obtain suitable examples to train the classification model?
 \begin{itemize}
-  \item \textit{Swap}: exchange source and target sentences.
-  \item \textit{Copy}: two copies of the same string. We apply it to both source and target strings.
-  \item \textit{Randomization}: replace the source or target sentence by a random sentence from the same side of the corpus.
+  \item \textit{Positive:} easy to obtain, e.g. sentences in a clean corpus such News Commentary V13
+  \item \textit{Negative:} no readily available -there exist no collection of ``wrong'' sentence pairs- but they can be generated on-demand
 \end{itemize}
 
-As can be seen from above, we focus on the perturbation operations that mess with the correct alignment between the sentences. Thus, we aim at identifying correctly aligned sentence pairs. A complementary approach would be to aim at detecting the actual ``quality'' of the sentence pair, or, in other words, how valuable a sentence pair is when used for training MT systems. However, this is left for future developments.
+\subsection*{Generation of negative examples}
+\begin{itemize}
+  \item Negative examples are ``perturbed'' version of positive sentence pairs
+  \item We consider three different perturbation operations:
+  \begin{itemize}
+  \item \textit{Swap:} exchange source and target sentences
+  \item \textit{Copy:} use same string in source and target
+  \item \textit{Randomization:} replace one sentence in the pair by a random sentence in the corpus
+  \end{itemize}
+  \item Operations only mess with the correct correspondence between sentences
+  \begin{itemize}
+    \item Aim at identifying correctly aligned sentence pairs
+    \item Alternative: estimate how valuable the pair is for training
+    \begin{itemize}
+      \item Not considered in this work, left for future developments
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
 
-We also used News Commentary V13 parallel corpus for training the classifier. We generated as many negative examples as positive sentence pairs in the corpus for a total of almost $600$k data points. The negative examples were evenly distributed among the three perturbation operations described above.
+~\newline
+Training examples were extracted from the News Commentary V13 parallel corpus
+\begin{itemize}
+  \item About $600$k training examples evenly distributed between positive and negative
+  \item Negative examples were evenly distributed among the three perturbation operations
+\end{itemize}
 
 
 \section*{\Large Classification Model}
