@@ -133,11 +133,18 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 
 
 \section*{\Large Classification Model}
-We did some initial experiments testing the performance of different classifiers on the task of distinguishing between actual original-translation sentence pairs and the synthetically generated negative examples. Gradient boosting algorithm obtained the highest accuracy and, therefore, we used it for our final submission.
+After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}} as the classifier for our final submission
+\begin{itemize}
+  \item Model in the form of an ensemble of weak classifiers, typically decision trees
+  \item Iterative construction of the final model
+  \item Allow for the optimization of arbitrary differentiable loss functions
+\end{itemize}
 
-Gradient boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}} is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. Similar to other boosting methods, it builds the models in a stage-wise fashion and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
-
-We used the implementation of gradient boosting classifier from the scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}} to train our model. The model was then applied to each sentence pair in the noisy Paracrawl corpus from the shared task. We used the probability of the positive class as predicted by the classifier as the final scores in our submission.
+We use the implementation of gradient boosting from the scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}}
+\begin{itemize}
+  \item Prediction applied form each sentence pair in the noisy Paracrawl corpus
+  \item Probability of the positive class submitted to the task
+\end{itemize}
 
 
 \section*{\Large Results}
