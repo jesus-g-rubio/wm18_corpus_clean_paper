@@ -75,21 +75,26 @@
 
 \subsection*{Fluency:} 
 \begin{itemize}
-  \item \textit{Language model score (2 f.)}: given language models for the source and target languages, we use as features the log probability of each sentence in the pair computed with the corresponding model.
-  \item \textit{Perplexity (2 f.)}: is measured as the inverse probability of the sentence normalized by its number of words. Again, we apply it to both source and target sentences in the pair.
+  \item \textit{Language model score (2 f.)}: log-probability of the source and target sentences
+  \item \textit{Perplexity (2 f.)}: for both source and target sentences
 \end{itemize}
 
 \subsection*{Shape:}
 \begin{itemize}
-  \item \textit{Counts (8 f.)}: count of words, numbers, alphanumeric tokens, and punctuation in both source and target sentences.
-  \item \textit{Jaccard index (4 f.)}: metric that measures the similarity and diversity of the sets of tokens between the source and target sentences. Formally it is defined as:
-  $$ \frac{\mid A\cap B\mid}{\mid A\cup B\mid}$$
-  where $A$ and $B$ are the set of tokens of the source and target sentences respectively. We apply it to words, numbers, alphanumeric tokens and punctuation.
-  \item \textit{Counts difference (16 f.)}: we compute four metrics from the counts of tokens: the ratio in both directions, the absolute difference, and the absolute difference normalized by the maximum number of tokens of both sentences. Each of these metrics is applied to four different types of tokens: words, numbers, alphanumeric tokens and punctuation.
-  \item \textit{Specific punctuation (12 f.)} same as the previous features, but in this case we only compute the absolute difference and the normalized difference for specific punctuation tokens: dot (.), comma (,), colon (:), semicolon (;), exclamation mark (!), and question mark (?).
+  \item \textit{Jaccard index (4 f.)}: similarity and diversity of sets of tokens in $\mathbf{s}$ and $\mathbf{t}$, applied to words, numbers, alphanumeric and punctuation tokens
+  $$ \frac{\mid \mathcal{S}\cap \mathcal{T}\mid}{\mid \mathcal{S}\cup \mathcal{T}\mid}$$
+  where $\mathcal{S}$ and $\mathcal{T}$ are sets of source/target tokens respectively
+  \item \textit{Counts (8 f.)}: of words, numbers, alphanumeric and punctuation tokens in $\mathbf{s}$ and $\mathbf{t}$
+  \item \textit{Counts difference (16 f.)}: ratio in both directions, absolute difference, and normalized absolute difference for the counts of words, numbers, alphanumeric and punctuation tokens
+  \item \textit{Specific punctuation (12 f.)} absolute difference and normalized difference for counts of dots, commas, colons, semicolons, exclamation and question marks
 \end{itemize}
 
-To compute the probabilistic lexicons, we used Moses on its default configuration with the News Commentary V13 parallel corpus as provided for the News translation shared task. We used the same corpora to train the language models. For this, we used Kenlm and estimated models of order $5$.
+~\newline
+All features were computed from models trained on the News Commentary V13 parallel corpus as provided for the News translation task
+\begin{itemize}
+  \item \textit{Probabilistic lexicons:} sub-product of Moses training on its default configuration
+  \item \textit{Language models:} $5$-gram models estimated with Kenlm
+\end{itemize}
 
 
 \section*{\Large Training Regime}
