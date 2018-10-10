@@ -36,20 +36,34 @@
 
 \section*{\Large Task Description and Proposed Approach}
 
+\subsection*{Task Description:}
 \begin{itemize}
-  \item {\large\bf Goal:} from a noisy corpus, extract the best subset of sentence pairs for training
-  \item {\large\bf Input:} a very noisy $1$ billion word German--English corpus crawled from the web as part of the Paracrawl project\footnote{\url{https://paracrawl.eu/}}.
-  \item {\large\bf Output:} two subsets of sentence pairs that amount to $100$ million words, and $10$ million words.
-  \item {\large\bf Evaluation criteria:} quality of a statistical and a neural Machine Translation systems trained on the selected data as measured by the BLEU score on two sets: the official WMT 2018 news translation test set, and a second undisclosed test set.
+  \item {\bf Goal:} from a noisy corpus, extract the best subset of sentence pairs for training
+  \item {\bf Input:} noisy $1$-billion-word German--English corpus part of the Paracrawl project\footnote{\url{https://paracrawl.eu/}}
+  \item {\bf Output:} a $100$-million-words and a $10$-million-words subsets of sentence pairs
+  \item {\bf Evaluation criteria:} quality of translation systems trained on the selected data
+  \begin{itemize}
+    \item Statistical and Neural systems
+    \item Two test sets: official WMT 2018 news translation test and a second undisclosed one
+    \item BLEU metric
+  \end{itemize}
 \end{itemize}
 
-We consider parallel corpus filtering as a QE task where the goal is to estimate to what extent a pair of sentences in two languages can be considered as translations of each other. 
-
-Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of features indicating to what extent the sentences correspond to each other. Then, these features are used to predict a binary score indicating if the sentences should be considered translation of each other.
+\subsection*{Proposed Approach:}
+\begin{itemize}
+  \item Corpus filtering as a QE task
+  \item {\bf Goal:} estimate to what extent a pair of sentences are translations of each other
+  \item {\bf Approach:} given a pair of sentences $(\mathbf{s}, \mathbf{t})$
+  \begin{enumerate}
+    \item Compute features indicating to what extent the sentences correspond to each other
+    \item Train a classification model on those features
+    \item Select sentences with higher score according to the trained model
+  \end{enumerate}
+\end{itemize}
 
 
 \section*{\Large Features}
-\subsection*{Adequacy} 
+\subsection*{Adequacy:} 
 \begin{itemize}
   \item \textit{Average Max lexical probability (2 f.)}: it measures the average maximum probability of translation for each word in the sentence. We apply it in both source-to-target and target-to-source directions. Formally, source-to-target is given by:
   $$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
@@ -57,13 +71,13 @@ Given a pair of sentences $(\mathbf{s}, \mathbf{t})$, we first compute a set of 
   \item \textit{Cross-entropy (2 f.)}: it measures a ``distance'' between the sentence pairs based on a bag-of-words translation model. Specifically, the ``distance'' is measured as the cross-entropy between the bag-of-words of the actual sentence and the bag-of-words estimated from the other sentence in the pair via the probabilistic lexicon. We apply it in both source-to-target and target-to-source directions.
 \end{itemize}
 
-\subsection*{Fluency} 
+\subsection*{Fluency:} 
 \begin{itemize}
   \item \textit{Language model score (2 f.)}: given language models for the source and target languages, we use as features the log probability of each sentence in the pair computed with the corresponding model.
   \item \textit{Perplexity (2 f.)}: is measured as the inverse probability of the sentence normalized by its number of words. Again, we apply it to both source and target sentences in the pair.
 \end{itemize}
 
-\subsection*{Shape}
+\subsection*{Shape:}
 \begin{itemize}
   \item \textit{Counts (8 f.)}: count of words, numbers, alphanumeric tokens, and punctuation in both source and target sentences.
   \item \textit{Jaccard index (4 f.)}: metric that measures the similarity and diversity of the sets of tokens between the source and target sentences. Formally it is defined as:
