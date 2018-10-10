@@ -147,13 +147,31 @@ We use the implementation of gradient boosting from the scikit-learn library\foo
 \end{itemize}
 
 
-\section*{\Large Results}
+\section*{\Large Submission}
 
-\includegraphics[width=\columnwidth]{assets/10M_crop.png}
+\begin{center}
+\includegraphics[width=0.85\columnwidth]{assets/10M_crop.png}
 
-\includegraphics[width=\columnwidth]{assets/100M_crop.png}
+\includegraphics[width=0.85\columnwidth]{assets/100M_crop.png}
+\end{center}
 
-
+\begin{itemize}
+  \item {\bf Results:}
+  \begin{itemize}
+    \item {\bf 10M:} $22.5\%$ BLEU for SMT ($\sim92\%$ of best, $24.5\%$), $24.8\%$ for NMT ($\sim87\%$ of best, $28.6$)
+    \item {\bf 100M:} $26.1\%$ BLEU for SMT ($\sim99\%$ of best, $26.5\%$), $31.2\%$ for NMT ($\sim97\%$ of best, $32.1\%$)
+  \end{itemize} 
+  \item[~]
+  \item {\bf Conclusions:}
+  \begin{itemize}
+    \item Few variation between different submissions in particular for the $100$M condition
+    \begin{itemize}
+      \item Difficult to estimate the real performance differences of each submission
+      \item Confidence intervals for the results can help
+    \end{itemize}
+    \item $100$M seem to be too big and neutralizes the differences between different approaches
+  \end{itemize}
+\end{itemize}
 
 \end{multicols*}
 
