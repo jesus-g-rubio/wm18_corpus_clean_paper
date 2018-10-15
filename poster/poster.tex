@@ -39,7 +39,7 @@
 \subsection*{Task Description:}
 \begin{itemize}
   \item {\bf Goal:} from a noisy corpus, extract the best subset of sentence pairs for training
-  \item {\bf Input:} noisy $1$-billion-word German--English corpus part of the Paracrawl project\footnote{\url{https://paracrawl.eu/}}
+  \item {\bf Input:} noisy $1$-billion-word German--English corpus part of the Paracrawl project %\footnote{\url{https://paracrawl.eu/}}
   \item {\bf Output:} a $100$-million-words and a $10$-million-words subsets of sentence pairs
   \item {\bf Evaluation criteria:} quality of translation systems trained on the selected data
   \begin{itemize}
@@ -97,6 +97,21 @@ All features were computed from models trained on the News Commentary V13 parall
 \end{itemize}
 
 
+\section*{\Large Classification Model}
+After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}} as the classifier for our final submission
+\begin{itemize}
+  \item Model in the form of an ensemble of weak classifiers, typically decision trees
+  \item Iterative construction of the final model
+  \item Allow for the optimization of arbitrary differentiable loss functions
+\end{itemize}
+
+We use the implementation of gradient boosting from the scikit-learn library %\footnote{\url{http://scikit-learn.org/stable/index.html}}
+\begin{itemize}
+  \item Predictions computed for each sentence pair in the noisy Paracrawl corpus
+  \item Probability of the positive class submitted to the task
+\end{itemize}
+
+
 \section*{\Large Training Regime}
 \subsection*{Initial considerations} 
 How to obtain suitable examples to train the classification model?
@@ -133,19 +148,7 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 \end{itemize}
 
 
-\section*{\Large Classification Model}
-After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}}~\cite{Friedman02} as the classifier for our final submission
-\begin{itemize}
-  \item Model in the form of an ensemble of weak classifiers, typically decision trees
-  \item Iterative construction of the final model
-  \item Allow for the optimization of arbitrary differentiable loss functions
-\end{itemize}
 
-We use the implementation of gradient boosting from the scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}}
-\begin{itemize}
-  \item Predictions computed for each sentence pair in the noisy Paracrawl corpus
-  \item Probability of the positive class submitted to the task
-\end{itemize}
 
 
 \section*{\Large Results}
