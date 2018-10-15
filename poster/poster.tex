@@ -68,7 +68,7 @@
   \item \textit{Average max lexical probability (2 f.)}: average maximum probability of word-to-word translation. Both source-to-target and target-to-source directions, e.g. source-to-target:
   $$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
   where $\mathbf{s}=s_1\ldots s_m$, $\mathbf{t}=t_1\ldots t_n$, and $s_0$ indicates the \textit{NULL} word
-  \item \textit{Cross-entropy (2 f.)}: ``distance'' between the sentences according to a bag-of-words model. Computed for both source and target sentences, e.g. for the source:
+  \item \textit{Cross-entropy (2 f.)}: ``distance'' between the sentences according to a bag-of-words model~\cite{Hainan17}. Computed for both source and target sentences, e.g. for the source:
   $$\sum_{s_j\in\mathbf{s}}C_{\mathbf{s}}(s_j)\cdot\mathrm{log}\left(\frac{1}{C_{\mathbf{s}<\mathbf{t}}(s_j)}\right)$$
   where $C_{\mathbf{s}}(s_j)$ is count of word $s_j$ in $\mathbf{s}$, and $C_{\mathbf{s}<\mathbf{t}}(s_j)=\sum_{t_i\in\mathbf{t}}C_{\mathbf{t}}(t_i)P(s_j\mid t_i)$ is the count of $s_j$ estimated from $\mathbf{t}$ via a probabilistic lexicon 
 \end{itemize}
@@ -107,8 +107,7 @@ How to obtain suitable examples to train the classification model?
 
 \subsection*{Generation of negative examples}
 \begin{itemize}
-  \item Negative examples are a %``perturbed''
-  distorted version of positive sentence pairs
+  \item Negative examples are a distorted version of positive sentence pairs~\cite{Hainan17}
   \item We consider three different perturbation operations:
   \begin{itemize}
   \item \textit{Swap:} interchange source and target sentences
@@ -135,7 +134,7 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 
 
 \section*{\Large Classification Model}
-After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}} as the classifier for our final submission
+After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipedia.org/wiki/Gradient_boosting}}~\cite{Friedman02} as the classifier for our final submission
 \begin{itemize}
   \item Model in the form of an ensemble of weak classifiers, typically decision trees
   \item Iterative construction of the final model
@@ -149,7 +148,7 @@ We use the implementation of gradient boosting from the scikit-learn library\foo
 \end{itemize}
 
 
-\section*{\Large Submission}
+\section*{\Large Results}
 
 \begin{center}
 \includegraphics[width=0.85\columnwidth]{assets/10M_crop.png}
@@ -175,6 +174,9 @@ We use the implementation of gradient boosting from the scikit-learn library\foo
     neutralizes the differences between different approaches
   \end{itemize}
 \end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{poster.bib}
 
 \end{multicols*}
 
