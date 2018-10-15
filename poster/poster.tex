@@ -43,7 +43,7 @@
   \item {\bf Output:} a $100$-million-words and a $10$-million-words subsets of sentence pairs
   \item {\bf Evaluation criteria:} quality of translation systems trained on the selected data
   \begin{itemize}
-    \item Statistical and Neural systems
+    \item Statistical and neural systems
     \item Two test sets: official WMT 2018 news translation test and a second undisclosed one
     \item BLEU metric
   \end{itemize}
@@ -65,10 +65,10 @@
 \section*{\Large Features}
 \subsection*{Adequacy:} 
 \begin{itemize}
-  \item \textit{Average max lexical probability (2 f.)}: average maximum probability of word-to-word translation. Both source-to-target and target-to-source directions, e.g.  source-to-target:
+  \item \textit{Average max lexical probability (2 f.)}: average maximum probability of word-to-word translation. Both source-to-target and target-to-source directions, e.g. source-to-target:
   $$ \frac{1}{n}\sum_1^n\max_{j=0}^m P(t_i\mid s_j) $$
   where $\mathbf{s}=s_1\ldots s_m$, $\mathbf{t}=t_1\ldots t_n$, and $s_0$ indicates the \textit{NULL} word
-  \item \textit{Cross-entropy (2 f.)}: ``distance'' between the sentences according to a bag-of-words model. Both source and target sentences, e.g. for source:
+  \item \textit{Cross-entropy (2 f.)}: ``distance'' between the sentences according to a bag-of-words model. Computed for both source and target sentences, e.g. for the source:
   $$\sum_{s_j\in\mathbf{s}}C_{\mathbf{s}}(s_j)\cdot\mathrm{log}\left(\frac{1}{C_{\mathbf{s}<\mathbf{t}}(s_j)}\right)$$
   where $C_{\mathbf{s}}(s_j)$ is count of word $s_j$ in $\mathbf{s}$, and $C_{\mathbf{s}<\mathbf{t}}(s_j)=\sum_{t_i\in\mathbf{t}}C_{\mathbf{t}}(t_i)P(s_j\mid t_i)$ is the count of $s_j$ estimated from $\mathbf{t}$ via a probabilistic lexicon 
 \end{itemize}
@@ -92,29 +92,31 @@
 ~\newline
 All features were computed from models trained on the News Commentary V13 parallel corpus as provided for the News translation task
 \begin{itemize}
-  \item \textit{Probabilistic lexicons:} sub-product of Moses training on its default configuration
-  \item \textit{Language models:} $5$-gram models estimated with Kenlm
+  \item \textit{Probabilistic lexicons:} by-product of Moses training with its default configuration
+  \item \textit{Language models:} $5$-gram models estimated with Kenlm toolkit
 \end{itemize}
 
 
 \section*{\Large Training Regime}
-\subsection*{Initial consideration} 
-how to obtain suitable examples to train the classification model?
+\subsection*{Initial considerations} 
+How to obtain suitable examples to train the classification model?
 \begin{itemize}
   \item \textit{Positive:} easy to obtain, e.g. sentences in a clean corpus such News Commentary V13
-  \item \textit{Negative:} no readily available -there exist no collection of ``wrong'' sentence pairs- but they can be generated on-demand
+  \item \textit{Negative:} not readily available -there is no collection of ``wrong'' sentence pairs- but can be generated on-demand
 \end{itemize}
 
 \subsection*{Generation of negative examples}
 \begin{itemize}
-  \item Negative examples are ``perturbed'' version of positive sentence pairs
+  \item Negative examples are a %``perturbed''
+  distorted version of positive sentence pairs
   \item We consider three different perturbation operations:
   \begin{itemize}
-  \item \textit{Swap:} exchange source and target sentences
-  \item \textit{Copy:} use same string in source and target
-  \item \textit{Randomization:} replace one sentence in the pair by a random sentence in the corpus
+  \item \textit{Swap:} interchange source and target sentences
+  \item \textit{Copy:} substitute the target sentence with a copy of the source sentence, or vice versa
+  % use the same string for source and target  
+  \item \textit{Randomization:} replace one sentence in the pair by a random sentence from the same side of the corpus
   \end{itemize}
-  \item Operations only mess with the correct correspondence between sentences
+  \item The operations above only mess with the correct correspondence between sentences
   \begin{itemize}
     \item Aim at identifying correctly aligned sentence pairs
     \item Alternative: estimate how valuable the pair is for training
@@ -142,7 +144,7 @@ After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipe
 
 We use the implementation of gradient boosting from the scikit-learn library\footnote{\url{http://scikit-learn.org/stable/index.html}}
 \begin{itemize}
-  \item Prediction applied form each sentence pair in the noisy Paracrawl corpus
+  \item Predictions computed for each sentence pair in the noisy Paracrawl corpus
   \item Probability of the positive class submitted to the task
 \end{itemize}
 
@@ -164,12 +166,13 @@ We use the implementation of gradient boosting from the scikit-learn library\foo
   \item[~]
   \item {\bf Conclusions:}
   \begin{itemize}
-    \item Few variation between different submissions in particular for the $100$M condition
+    \item Little variation between different submissions, in particular for the $100$M condition
     \begin{itemize}
       \item Difficult to estimate the real performance differences of each submission
       \item Confidence intervals for the results can help
     \end{itemize}
-    \item $100$M seem to be too big and neutralizes the differences between different approaches
+    \item The $100$M condition % seems to be too big and
+    neutralizes the differences between different approaches
   \end{itemize}
 \end{itemize}
 
