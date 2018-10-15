@@ -160,22 +160,20 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 \end{center}
 
 \begin{itemize}
-  \item {\bf Results:}
+  \item {\bf 10M:} $22.5\%$ BLEU for SMT ($\sim92\%$ of best, $24.5\%$), $24.8\%$ for NMT ($\sim87\%$ of best, $28.6$)
+  \item {\bf 100M:} $26.1\%$ BLEU for SMT ($\sim99\%$ of best, $26.5\%$), $31.2\%$ for NMT ($\sim97\%$ of best, $32.1\%$)
+\end{itemize} 
+
+
+\section*{\Large Conclusions}
+\begin{itemize}
+  \item Little variation between different submissions, in particular for the $100$M condition
   \begin{itemize}
-    \item {\bf 10M:} $22.5\%$ BLEU for SMT ($\sim92\%$ of best, $24.5\%$), $24.8\%$ for NMT ($\sim87\%$ of best, $28.6$)
-    \item {\bf 100M:} $26.1\%$ BLEU for SMT ($\sim99\%$ of best, $26.5\%$), $31.2\%$ for NMT ($\sim97\%$ of best, $32.1\%$)
-  \end{itemize} 
-  \item[~]
-  \item {\bf Conclusions:}
-  \begin{itemize}
-    \item Little variation between different submissions, in particular for the $100$M condition
-    \begin{itemize}
-      \item Difficult to estimate the real performance differences of each submission
-      \item Confidence intervals for the results can help
-    \end{itemize}
-    \item The $100$M condition % seems to be too big and
-    neutralizes the differences between different approaches
+    \item Difficult to estimate the real performance differences of each submission
+    \item Confidence intervals for the results can help
   \end{itemize}
+  \item The $100$M condition % seems to be too big and
+  neutralizes the differences between different approaches
 \end{itemize}
 
 \bibliographystyle{plain}
