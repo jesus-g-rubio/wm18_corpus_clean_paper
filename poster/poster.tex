@@ -43,7 +43,7 @@
   \item {\bf Output:} a $100$-million-words and a $10$-million-words subsets of sentence pairs
   \item {\bf Evaluation criteria:} quality of translation systems trained on the selected data
   \begin{itemize}
-    \item Statistical and neural systems
+    \item Statistical and neural machine translation systems
     \item Two test sets: official WMT 2018 news translation test and a second undisclosed one
     \item BLEU metric
   \end{itemize}
@@ -52,7 +52,7 @@
 \subsection*{Proposed Approach:}
 \begin{itemize}
   \item Corpus filtering as a QE task
-  \item {\bf Goal:} estimate to what extent a pair of sentences are translations of each other
+  \item {\bf Goal:} estimate if a pair of sentences are translations of each other
   \item {\bf Approach:} given a pair of sentences $(\mathbf{s}, \mathbf{t})$
   \begin{enumerate}
     \item Compute features indicating to what extent the sentences correspond to each other
@@ -105,10 +105,11 @@ After initial tests, we choose Gradient Boosting\footnote{\url{https://en.wikipe
   \item Allow for the optimization of arbitrary differentiable loss functions
 \end{itemize}
 
+~\newline
 We use the implementation of gradient boosting from the scikit-learn library %\footnote{\url{http://scikit-learn.org/stable/index.html}}
 \begin{itemize}
   \item Predictions computed for each sentence pair in the noisy Paracrawl corpus
-  \item Probability of the positive class submitted to the task
+  \item Probability of the positive class was the score submitted to the task
 \end{itemize}
 
 
@@ -116,14 +117,14 @@ We use the implementation of gradient boosting from the scikit-learn library %\f
 \subsection*{Initial considerations} 
 How to obtain suitable examples to train the classification model?
 \begin{itemize}
-  \item \textit{Positive:} easy to obtain, e.g. sentences in a clean corpus such News Commentary V13
+  \item \textit{Positive:} easy to obtain, e.g. sentences in a clean corpus such News Commentary
   \item \textit{Negative:} not readily available -there is no collection of ``wrong'' sentence pairs- but can be generated on-demand
 \end{itemize}
 
 \subsection*{Generation of negative examples}
 \begin{itemize}
   \item Negative examples are a distorted version of positive sentence pairs~\cite{Hainan17}
-  \item We consider three different perturbation operations:
+  \item We consider three different distortion operations:
   \begin{itemize}
   \item \textit{Swap:} interchange source and target sentences
   \item \textit{Copy:} substitute the target sentence with a copy of the source sentence, or vice versa
@@ -144,7 +145,7 @@ How to obtain suitable examples to train the classification model?
 Training examples were extracted from the News Commentary V13 parallel corpus
 \begin{itemize}
   \item About $600$k training examples evenly distributed between positive and negative
-  \item Negative examples were evenly distributed among the three perturbation operations
+  \item Negative examples were evenly distributed among the three distortion operations
 \end{itemize}
 
 
@@ -160,7 +161,7 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 \end{center}
 
 \begin{itemize}
-  \item {\bf 10M:} $22.5\%$ BLEU for SMT ($\sim92\%$ of best, $24.5\%$), $24.8\%$ for NMT ($\sim87\%$ of best, $28.6$)
+  \item {\bf 10M:} $22.5\%$ BLEU for SMT ($\sim92\%$ of best, $24.5\%$), $24.8\%$ for NMT ($\sim87\%$ of best, $28.6\%$)
   \item {\bf 100M:} $26.1\%$ BLEU for SMT ($\sim99\%$ of best, $26.5\%$), $31.2\%$ for NMT ($\sim97\%$ of best, $32.1\%$)
 \end{itemize} 
 
@@ -169,8 +170,8 @@ Training examples were extracted from the News Commentary V13 parallel corpus
 \begin{itemize}
   \item Little variation between different submissions, in particular for the $100$M condition
   \begin{itemize}
-    \item Difficult to estimate the real performance differences of each submission
-    \item Confidence intervals for the results can help
+    \item Difficult to estimate the real difference of performance between submissions
+    \item Confidence intervals for the results should help
   \end{itemize}
   \item The $100$M condition % seems to be too big and
   neutralizes the differences between different approaches
